@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mystical Fire® — Original Colour-Changing Fire Sachets</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ember: #ff4500;
+    --flame: #ff8c00;
+    --gold: #ffd700;
+    --deep: #080400;
+    --char: #130b00;
+    --ash: #251500;
+    --smoke: #8a7560;
+    --cream: #f5ead8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--cream);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px;
+    overflow-x: hidden;
+  }
+
+  /* GRAIN */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(8,4,0,0.9) 0%, transparent 100%);
+  }
+
+  .nav-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--ember); }
+
+  .nav-right { display: flex; gap: 1.5rem; align-items: center; }
+
+  nav a.buy-nav {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--deep);
+    background: var(--gold);
+    padding: 0.6rem 1.5rem;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  nav a.buy-nav:hover { background: var(--ember); color: white; }
+
+  /* ===================== HERO ===================== */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  /* VIDEO BACKGROUND — full bleed, object-fit cover */
+  .hero-video-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-video-wrap video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.6) saturate(1.4);
+  }
+
+  /* Vignette overlay */
+  .hero-video-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, rgba(8,4,0,0.85) 0%, rgba(8,4,0,0.4) 50%, rgba(8,4,0,0.2) 100%),
+      linear-gradient(to top, rgba(8,4,0,0.7) 0%, transparent 40%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 6rem;
+    max-width: 650px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--flame);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.3s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.5s forwards;
+  }
+
+  .hero h1 .fire-word {
+    display: block;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--flame) 60%, var(--ember) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-tagline {
+    font-size: 1.2rem;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(245,234,216,0.75);
+    line-height: 1.6;
+    max-width: 420px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.7s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.9s forwards;
+  }
+
+  .btn-primary {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--deep);
+    background: linear-gradient(135deg, var(--gold), var(--flame));
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--flame), var(--ember));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .btn-primary:hover::before { opacity: 1; }
+  .btn-primary span { position: relative; z-index: 1; }
+
+  .btn-ghost {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: transparent;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    border: 1px solid rgba(245,234,216,0.3);
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* Video play button (for mobile where autoplay may fail) */
+  .play-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    right: 3rem;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 1.2s forwards;
+    cursor: pointer;
+  }
+
+  .play-circle {
+    width: 56px;
+    height: 56px;
+    border: 1px solid rgba(255,215,0,0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+    background: rgba(8,4,0,0.4);
+    backdrop-filter: blur(4px);
+  }
+  .play-hint:hover .play-circle {
+    border-color: var(--gold);
+    background: rgba(255,215,0,0.1);
+  }
+  .play-hint span {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(245,234,216,0.5);
+  }
+
+  /* Scroll arrow */
+  .scroll-down {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 1.4s forwards;
+  }
+  .scroll-down span {
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(245,234,216,0.4);
+  }
+  .scroll-arrow {
+    width: 1px;
+    height: 45px;
+    background: linear-gradient(to bottom, rgba(255,140,0,0.8), transparent);
+    animation: arrowPulse 2s ease-in-out infinite;
+  }
+
+  /* ===================== VALUE STRIP ===================== */
+  .value-strip {
+    position: relative;
+    z-index: 2;
+    background: var(--char);
+    border-top: 1px solid rgba(255,140,0,0.25);
+    border-bottom: 1px solid rgba(255,140,0,0.15);
+    padding: 1.4rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+  .value-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.03em;
+  }
+  .value-item strong { color: var(--gold); }
+
+  /* ===================== VIDEO FEATURE SECTION ===================== */
+  .video-section {
+    position: relative;
+    z-index: 2;
+    padding: 7rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .video-phone {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Phone frame around the portrait video */
+  .phone-frame {
+    position: relative;
+    width: 280px;
+    background: #111;
+    border-radius: 36px;
+    padding: 12px;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.08),
+      0 40px 80px rgba(0,0,0,0.6),
+      0 0 60px rgba(255,140,0,0.2);
+  }
+
+  .phone-notch {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 6px;
+    background: #222;
+    border-radius: 3px;
+    z-index: 2;
+  }
+
+  .phone-screen {
+    border-radius: 26px;
+    overflow: hidden;
+    background: #000;
+    aspect-ratio: 9/16;
+  }
+
+  .phone-screen video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Glow under phone */
+  .phone-glow {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 80px;
+    background: radial-gradient(ellipse, rgba(255,100,0,0.4) 0%, transparent 70%);
+    filter: blur(20px);
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+
+  .video-copy .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--flame);
+    margin-bottom: 1rem;
+  }
+
+  .video-copy h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: var(--cream);
+  }
+  .video-copy h2 em { color: var(--gold); font-style: italic; font-weight: 400; }
+
+  .video-copy p {
+    font-size: 1.05rem;
+    color: rgba(245,234,216,0.7);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+
+  .proof-points {
+    list-style: none;
+    margin: 2rem 0;
+  }
+  .proof-points li {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: rgba(245,234,216,0.8);
+    line-height: 1.4;
+  }
+  .proof-points li .dot {
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ===================== COMPARISON ===================== */
+  .compare-section {
+    position: relative;
+    z-index: 2;
+    background: var(--char);
+    border-top: 1px solid rgba(255,140,0,0.12);
+    padding: 6rem 4rem;
+  }
+
+  .compare-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .compare-inner .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--flame);
+    margin-bottom: 1rem;
+  }
+
+  .compare-inner h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 600;
+    margin-bottom: 3rem;
+  }
+  .compare-inner h2 em { color: var(--gold); font-style: italic; font-weight: 400; }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .compare-table thead tr {
+    border-bottom: 2px solid rgba(255,140,0,0.2);
+  }
+
+  .compare-table th {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 1rem 1.5rem;
+    text-align: left;
+  }
+  .compare-table th.col-them { color: var(--smoke); }
+  .compare-table th.col-us {
+    color: var(--gold);
+    background: rgba(255,215,0,0.05);
+    border-left: 2px solid rgba(255,215,0,0.2);
+  }
+
+  .compare-table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: rgba(245,234,216,0.7);
+  }
+  .compare-table td.col-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--smoke);
+  }
+  .compare-table td.col-them { color: #555; }
+  .compare-table td.col-us {
+    color: var(--gold);
+    font-weight: 600;
+    background: rgba(255,215,0,0.04);
+    border-left: 2px solid rgba(255,215,0,0.15);
+  }
+
+  .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .compare-table tr:hover td.col-us { background: rgba(255,215,0,0.07); }
+
+  .verdict-bar {
+    margin-top: 2.5rem;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, rgba(255,215,0,0.06), rgba(255,69,0,0.06));
+    border: 1px solid rgba(255,215,0,0.2);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(245,234,216,0.85);
+  }
+  .verdict-bar strong { color: var(--gold); }
+
+  /* ===================== ORDER ===================== */
+  .order-section {
+    position: relative;
+    z-index: 2;
+    padding: 7rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .order-left .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--flame);
+    margin-bottom: 1rem;
+  }
+
+  .order-left h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 600;
+    line-height: 1.05;
+    margin-bottom: 2rem;
+  }
+  .order-left h2 em { color: var(--gold); font-style: italic; font-weight: 400; }
+
+  .price-hero {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .price-big {
+    font-family: 'Cinzel', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .price-desc {
+    font-size: 0.9rem;
+    color: var(--smoke);
+    font-style: italic;
+  }
+  .price-per-gram {
+    display: inline-block;
+    margin-bottom: 2rem;
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    color: var(--flame);
+    background: rgba(255,69,0,0.1);
+    border: 1px solid rgba(255,69,0,0.25);
+    padding: 0.35rem 0.8rem;
+  }
+
+  .features-list {
+    list-style: none;
+    margin-bottom: 2rem;
+  }
+  .features-list li {
+    padding: 0.65rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.92rem;
+    color: rgba(245,234,216,0.8);
+    line-height: 1.4;
+  }
+  .features-list li .f-icon { color: var(--gold); flex-shrink: 0; }
+
+  /* ORDER CARD */
+  .order-card {
+    background: var(--char);
+    border: 1px solid rgba(255,140,0,0.2);
+    padding: 2.5rem;
+    position: sticky;
+    top: 6rem;
+  }
+
+  .order-card-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--smoke);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .order-product-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .order-product-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    color: var(--cream);
+    margin-bottom: 0.2rem;
+  }
+  .order-product-sub {
+    font-size: 0.78rem;
+    color: var(--smoke);
+    font-style: italic;
+  }
+  .order-product-price {
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+  }
+
+  .qty-section {
+    margin-bottom: 1.5rem;
+  }
+  .qty-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  .qty-lbl {
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--smoke);
+  }
+  .qty-controls {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(255,140,0,0.3);
+  }
+  .qty-btn {
+    width: 38px;
+    height: 38px;
+    background: var(--ash);
+    border: none;
+    color: var(--cream);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: 'Cinzel', serif;
+  }
+  .qty-btn:hover { background: rgba(255,140,0,0.2); color: var(--gold); }
+  .qty-display {
+    width: 48px;
+    height: 38px;
+    background: transparent;
+    border: none;
+    border-left: 1px solid rgba(255,140,0,0.3);
+    border-right: 1px solid rgba(255,140,0,0.3);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .order-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 0.75rem;
+  }
+  .total-lbl {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--smoke);
+  }
+  .total-price {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    color: var(--gold);
+  }
+
+  .postage-free {
+    font-size: 0.78rem;
+    color: var(--smoke);
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .paypal-btn {
+    width: 100%;
+    padding: 1.1rem;
+    background: #003087;
+    border: none;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: white;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .paypal-btn:hover { background: #001f6b; }
+  .pp-mark { font-size: 1rem; font-weight: 900; font-style: italic; font-family: 'Crimson Pro', serif; }
+  .pp-blue { color: #009cde; }
+
+  .divider-or {
+    text-align: center;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(138,117,96,0.4);
+    margin: 1rem 0;
+    position: relative;
+  }
+  .divider-or::before, .divider-or::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+  }
+  .divider-or::before { left: 0; }
+  .divider-or::after { right: 0; }
+
+  .marketplace-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  .mkt-btn {
+    padding: 0.75rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: transparent;
+    color: var(--smoke);
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+  }
+  .mkt-btn:hover { border-color: rgba(255,255,255,0.2); color: var(--cream); }
+
+  /* ===================== HOW TO USE ===================== */
+  .how-section {
+    position: relative;
+    z-index: 2;
+    background: var(--char);
+    border-top: 1px solid rgba(255,140,0,0.12);
+    padding: 6rem 4rem;
+  }
+  .how-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .how-inner .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--flame);
+    margin-bottom: 1rem;
+  }
+  .how-inner h2 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 600;
+    margin-bottom: 3rem;
+  }
+  .how-inner h2 em { color: var(--gold); font-style: italic; font-weight: 400; }
+
+  .steps-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .step-card {
+    padding: 2rem;
+    border: 1px solid rgba(255,140,0,0.1);
+    position: relative;
+    transition: border-color 0.3s;
+  }
+  .step-card:hover { border-color: rgba(255,140,0,0.35); }
+
+  .step-num {
+    font-family: 'Cinzel', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: rgba(255,140,0,0.12);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .step-card h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--cream);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+  }
+  .step-card p {
+    font-size: 0.9rem;
+    color: var(--smoke);
+    line-height: 1.7;
+  }
+
+  .safety-note {
+    margin-top: 3rem;
+    padding: 1.5rem 2rem;
+    background: rgba(255,69,0,0.04);
+    border: 1px solid rgba(255,69,0,0.15);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .safety-icon { font-size: 1.5rem; margin-top: 0.2rem; }
+  .safety-note h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 0.75rem;
+  }
+  .safety-note ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem 2rem;
+  }
+  .safety-note ul li {
+    font-size: 0.82rem;
+    color: var(--smoke);
+    display: flex;
+    gap: 0.4rem;
+  }
+  .safety-note ul li::before { content: '·'; color: var(--ember); }
+
+  /* ===================== FOOTER ===================== */
+  footer {
+    position: relative;
+    z-index: 2;
+    background: var(--deep);
+    border-top: 1px solid rgba(255,140,0,0.1);
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .footer-logo span { color: var(--ember); }
+  footer .tagline {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--smoke);
+    margin-bottom: 1.5rem;
+  }
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--smoke);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  footer .legal {
+    font-size: 0.7rem;
+    color: rgba(138,117,96,0.5);
+    line-height: 1.9;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* ===================== ANIMATIONS ===================== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  @keyframes arrowPulse {
+    0%, 100% { opacity: 1; transform: scaleY(1); }
+    50% { opacity: 0.2; transform: scaleY(0.5); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ===================== RESPONSIVE ===================== */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .hero-content { padding: 0 2rem; max-width: 100%; }
+    .video-section { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 3rem; }
+    .phone-frame { width: 220px; }
+    .compare-section { padding: 4rem 2rem; }
+    .order-section { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 3rem; }
+    .order-card { position: static; }
+    .steps-row { grid-template-columns: 1fr; }
+    .how-section { padding: 4rem 2rem; }
+    .safety-note ul { grid-template-columns: 1fr; }
+    .play-hint { right: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Mystical<span>Fire</span>®</a>
+  <div class="nav-right">
+    <a href="#order" class="buy-nav">Order Now</a>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<div class="hero">
+  <div class="hero-video-wrap">
+    <video id="hero-video" autoplay muted loop playsinline>
+      <source src="mysticalfire.mp4" type="video/mp4">
+      <source src="mysticalfire.mov" type="video/quicktime">
+    </video>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">The Original · Est. 15 Years in the UK · EU Registered Trademark</p>
+    <h1>
+      The
+      <span class="fire-word">Mystical Fire®</span>
+    </h1>
+    <p class="hero-tagline">Real colour. Real flames. Not a cheap imitation.</p>
+    <div class="hero-actions">
+      <a href="#order" class="btn-primary"><span>Order Now — £9.99</span></a>
+      <a href="#why" class="btn-ghost">Why Original?</a>
+    </div>
+  </div>
+
+  <div class="play-hint" onclick="toggleVideo()">
+    <div class="play-circle" id="play-icon">⏸</div>
+    <span id="play-label">Pause</span>
+  </div>
+
+  <div class="scroll-down">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</div>
+
+<!-- VALUE STRIP -->
+<div class="value-strip">
+  <div class="value-item">🔥 <span><strong>25g</strong> per sachet</span></div>
+  <div class="value-item">📦 <span><strong>10 sachets</strong> per pack</span></div>
+  <div class="value-item">🚚 <span><strong>Free UK postage</strong> · 48hr dispatch</span></div>
+  <div class="value-item">✅ <span><strong>Indoor & outdoor</strong> safe</span></div>
+  <div class="value-item">⭐ <span><strong>15 years</strong> trusted in UK</span></div>
+</div>
+
+<!-- ===================== VIDEO FEATURE ===================== -->
+<div class="video-section" id="why">
+  <div class="video-phone reveal">
+    <div class="phone-frame">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+        <video autoplay muted loop playsinline>
+          <source src="mysticalfire.mp4" type="video/mp4">
+          <source src="mysticalfire.mov" type="video/quicktime">
+        </video>
+      </div>
+    </div>
+    <div class="phone-glow"></div>
+  </div>
+
+  <div class="video-copy">
+    <p class="section-label reveal">See It For Yourself</p>
+    <h2 class="reveal">This is what <em>real</em> colour-changing fire looks like</h2>
+    <p class="reveal">No filter. No editing. Just one Mystical Fire® sachet on a wood-burning fire. Greens, blues, purples and reds — dancing for up to 45 minutes.</p>
+    <p class="reveal">The cheap imitations come in tiny 10g sachets and fade fast. Mystical Fire sachets are 25g — 150% more product, tested formula, 15 years in British homes.</p>
+
+    <ul class="proof-points">
+      <li class="reveal"><span class="dot">✦</span> 25g per sachet — genuine formula, not the 10g budget version</li>
+      <li class="reveal"><span class="dot">✦</span> Works on log burners, fire pits, open fires, campfires & BBQs</li>
+      <li class="reveal"><span class="dot">✦</span> No smell, no noise, no mess — just colour</li>
+      <li class="reveal"><span class="dot">✦</span> EU Registered Trademark No. 017890588 — the verified original</li>
+      <li class="reveal"><span class="dot">✦</span> Dispatched from the UK within 48 hours</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===================== COMPARISON ===================== -->
+<div class="compare-section">
+  <div class="compare-inner">
+    <p class="section-label reveal">The Numbers</p>
+    <h2 class="reveal">Compare before you <em>buy anything</em></h2>
+
+    <table class="compare-table reveal">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="col-them">Cheap Imitations</th>
+          <th class="col-us">Mystical Fire® Original</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-label">Weight per sachet</td>
+          <td class="col-them">10g</td>
+          <td class="col-us">25g ✦</td>
+        </tr>
+        <tr>
+          <td class="col-label">Sachets in pack</td>
+          <td class="col-them">10–15</td>
+          <td class="col-us">10</td>
+        </tr>
+        <tr>
+          <td class="col-label">Total product per pack</td>
+          <td class="col-them">100–150g</td>
+          <td class="col-us">250g ✦</td>
+        </tr>
+        <tr>
+          <td class="col-label">Typical price</td>
+          <td class="col-them">~£8–10</td>
+          <td class="col-us">£9.99</td>
+        </tr>
+        <tr>
+          <td class="col-label">Cost per 100g</td>
+          <td class="col-them">£8.00+</td>
+          <td class="col-us">£3.99 ✦</td>
+        </tr>
+        <tr>
+          <td class="col-label">Burn time per sachet</td>
+          <td class="col-them">5–15 mins</td>
+          <td class="col-us">20–45 mins ✦</td>
+        </tr>
+        <tr>
+          <td class="col-label">UK heritage</td>
+          <td class="col-them">—</td>
+          <td class="col-us">15 years ✦</td>
+        </tr>
+        <tr>
+          <td class="col-label">Registered trademark</td>
+          <td class="col-them">No</td>
+          <td class="col-us">EU TM 017890588 ✦</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="verdict-bar reveal">
+      <strong>The maths are clear.</strong> Mystical Fire® costs £3.99 per 100g. The cheap alternatives cost £8.00+. You're not paying more for the original — you're paying <em>less</em>, for more product, from a brand that's been doing this for 15 years.
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ORDER ===================== -->
+<div class="order-section" id="order">
+  <div class="order-left">
+    <p class="section-label reveal">Order Direct</p>
+    <h2 class="reveal">Mystical Fire®<br><em>10-Pack Original</em></h2>
+
+    <div class="reveal">
+      <div class="price-hero">
+        <div class="price-big">£9.99</div>
+        <div class="price-desc">Free UK postage</div>
+      </div>
+      <div class="price-per-gram">£3.99 per 100g — half the price of imitations</div>
+    </div>
+
+    <ul class="features-list reveal">
+      <li><span class="f-icon">✦</span> 10 × genuine Mystical Fire® sachets</li>
+      <li><span class="f-icon">✦</span> 25g each — 250g total product</li>
+      <li><span class="f-icon">✦</span> Log burners, fire pits, campfires & BBQs</li>
+      <li><span class="f-icon">✦</span> 20–45 minutes colour per sachet</li>
+      <li><span class="f-icon">✦</span> No smell · No noise · No mess</li>
+      <li><span class="f-icon">✦</span> UK dispatch within 48 hours</li>
+      <li><span class="f-icon">✦</span> EU Registered Trademark — the genuine original</li>
+    </ul>
+  </div>
+
+  <div class="order-card reveal">
+    <div class="order-card-title">Your Order</div>
+
+    <div class="order-product-row">
+      <div>
+        <div class="order-product-name">Mystical Fire® 10-Pack</div>
+        <div class="order-product-sub">10 × 25g original sachets</div>
+      </div>
+      <div class="order-product-price">£9.99</div>
+    </div>
+
+    <div class="qty-section">
+      <div class="qty-label-row">
+        <span class="qty-lbl">Quantity (packs)</span>
+        <div class="qty-controls">
+          <button class="qty-btn" onclick="changeQty(-1)">−</button>
+          <input class="qty-display" id="qty" type="number" value="1" min="1" max="99" readonly>
+          <button class="qty-btn" onclick="changeQty(1)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-total-row">
+      <span class="total-lbl">Total</span>
+      <span class="total-price" id="total">£9.99</span>
+    </div>
+
+    <p class="postage-free">✓ Free UK postage included · Usually dispatched within 48 hours</p>
+
+    <button class="paypal-btn" onclick="handlePayPal()">
+      <span class="pp-mark"><span class="pp-blue">Pay</span>Pal</span>
+      <span>Checkout with PayPal</span>
+    </button>
+
+    <div class="divider-or">or find us on</div>
+
+    <div class="marketplace-row">
+      <a href="#" class="mkt-btn">eBay →</a>
+      <a href="#" class="mkt-btn">Amazon →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== HOW TO USE ===================== -->
+<div class="how-section" id="how">
+  <div class="how-inner">
+    <p class="section-label reveal">Simple</p>
+    <h2 class="reveal">Three steps to <em>magical fire</em></h2>
+
+    <div class="steps-row">
+      <div class="step-card reveal">
+        <div class="step-num">01</div>
+        <h3>Light Your Fire</h3>
+        <p>Get a good wood-burning fire going first — log burner, fire pit, open fireplace, campfire or BBQ. Any wood-burning fire works.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">02</div>
+        <h3>Place Unopened</h3>
+        <p>Do not open the sachet. Place 1–3 whole sachets directly onto the burning wood. The whole sachet burns completely — nothing to clean up.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">03</div>
+        <h3>Watch & Enjoy</h3>
+        <p>Within seconds the flames transform — greens, blues, purples and reds dancing for 20–45 minutes. Stand back and enjoy the show.</p>
+      </div>
+    </div>
+
+    <div class="safety-note reveal">
+      <div class="safety-icon">⚠️</div>
+      <div>
+        <h4>Safety Information</h4>
+        <ul>
+          <li>Do not open the sachet</li>
+          <li>Do not cook over flames after use</li>
+          <li>Do not use on gas fires</li>
+          <li>Keep out of reach of children</li>
+          <li>For wood-burning fires only</li>
+          <li>Store in a cool, dry place</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Mystical<span>Fire</span>®</div>
+  <p class="tagline">The original colour-changing fire sachet — trusted in UK homes for over 15 years.</p>
+  <div class="footer-links">
+    <a href="#why">Why Original</a>
+    <a href="#order">Order</a>
+    <a href="#how">How To Use</a>
+    <a href="#">eBay Store</a>
+    <a href="#">Amazon</a>
+  </div>
+  <p class="legal">
+    MYSTICAL FIRE® is a registered trademark of Mystical Distributing Company Ltd, Trenton, Ontario, Canada.<br>
+    EU Trade Mark Registration No. 017890588 · Registered 01 September 2018 · European Union Intellectual Property Office<br>
+    mysticalfire.co.uk · © 2025 Mystical Fire. All rights reserved.
+  </p>
+</footer>
+
+<script>
+// VIDEO PLAY/PAUSE TOGGLE
+const heroVideo = document.getElementById('hero-video');
+let playing = true;
+
+function toggleVideo() {
+  if (playing) {
+    heroVideo.pause();
+    document.getElementById('play-icon').textContent = '▶';
+    document.getElementById('play-label').textContent = 'Play';
+  } else {
+    heroVideo.play();
+    document.getElementById('play-icon').textContent = '⏸';
+    document.getElementById('play-label').textContent = 'Pause';
+  }
+  playing = !playing;
+}
+
+// QTY
+function changeQty(delta) {
+  const input = document.getElementById('qty');
+  const newVal = Math.max(1, Math.min(99, parseInt(input.value) + delta));
+  input.value = newVal;
+  document.getElementById('total').textContent = '£' + (newVal * 9.99).toFixed(2);
+}
+
+// PAYPAL PLACEHOLDER
+function handlePayPal() {
+  alert('PayPal checkout coming soon!\n\nFor now, please order via our eBay or Amazon listings using the links below, or email us directly at sales@mysticalfire.co.uk');
+}
+
+// SCROLL REVEAL
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 60);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
