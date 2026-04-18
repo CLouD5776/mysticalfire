@@ -1151,15 +1151,23 @@
 
     <p class="postage-free">✓ Free UK postage included · Usually dispatched within 48 hours</p>
 
-    <button class="paypal-btn" onclick="handlePayPal()">
-      <span class="pp-mark"><span class="pp-blue">Pay</span>Pal</span>
-      <span>Checkout with PayPal</span>
-    </button>
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="margin-bottom:0.75rem;">
+      <input type="hidden" name="cmd" value="_xclick">
+      <input type="hidden" name="business" value="Mike.Knox@btinternet.com">
+      <input type="hidden" name="item_name" value="Mystical Fire® 10-Pack">
+      <input type="hidden" name="currency_code" value="GBP">
+      <input type="hidden" name="amount" id="paypal-amount" value="9.99">
+      <input type="hidden" name="shipping" value="0">
+      <button type="submit" class="paypal-btn">
+        <span class="pp-mark"><span class="pp-blue">Pay</span>Pal</span>
+        Checkout with PayPal
+      </button>
+    </form>
 
     <div class="divider-or">or find us on</div>
 
     <div class="marketplace-row">
-      <a href="#" class="mkt-btn">eBay →</a>
+      <a href="https://www.ebay.co.uk/itm/256651456521" target="_blank" class="mkt-btn">eBay →</a>
       <a href="#" class="mkt-btn">Amazon →</a>
     </div>
   </div>
@@ -1214,7 +1222,7 @@
     <a href="#why">Why Original</a>
     <a href="#order">Order</a>
     <a href="#how">How To Use</a>
-    <a href="#">eBay Store</a>
+    <a href="https://www.ebay.co.uk/itm/256651456521" target="_blank">eBay Store</a>
     <a href="#">Amazon</a>
   </div>
   <p class="legal">
@@ -1242,17 +1250,14 @@ function toggleVideo() {
   playing = !playing;
 }
 
-// QTY
+// QTY — keeps display total and PayPal amount field in sync
 function changeQty(delta) {
   const input = document.getElementById('qty');
   const newVal = Math.max(1, Math.min(99, parseInt(input.value) + delta));
   input.value = newVal;
-  document.getElementById('total').textContent = '£' + (newVal * 9.99).toFixed(2);
-}
-
-// PAYPAL PLACEHOLDER
-function handlePayPal() {
-  alert('PayPal checkout coming soon!\n\nFor now, please order via our eBay or Amazon listings using the links below, or email us directly at sales@mysticalfire.co.uk');
+  const total = (newVal * 9.99).toFixed(2);
+  document.getElementById('total').textContent = '£' + total;
+  document.getElementById('paypal-amount').value = total;
 }
 
 // SCROLL REVEAL
